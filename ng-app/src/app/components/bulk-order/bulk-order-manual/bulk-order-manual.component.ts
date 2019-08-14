@@ -75,15 +75,17 @@ export class BulkOrderManualComponent implements OnInit, OnDestroy {
         itemForm.get('id').setValue(null);
         // itemForm.get('sku').setValidators([Validators.required, this.uniqueSkuValidator]);
         if (p != null) {
-          itemForm.get('id').setValue(p.id);
+          itemForm.get('id').patchValue(p.id);
           itemForm.get('productName').setValue(p.name);
           itemForm.get('qty')
             .setValidators([
               Validators.required,
               Validators.min(1),
               // todo: set to real caonstraint value
-              Validators.max(50)
+              Validators.max(100)
             ]);
+          // itemForm.get('id').updateValueAndValidity();
+          // itemForm.get('qty').updateValueAndValidity();
         } else {
           itemForm.get('id').setValue(null);
           if (itemForm.controls.sku.value !== '') {
@@ -202,10 +204,10 @@ export class BulkOrderManualComponent implements OnInit, OnDestroy {
     // this.itemsForms.push(newItemForm);
     this.items.push(itemForm);
     // to on valueChanges
-    itemForm.get('sku').patchValue(this.newItemForm.get('sku').value);
-    //itemForm.updateValueAndValidity();
-    itemForm.markAsTouched();
-    this.itemsForm.updateValueAndValidity( {emitEvent: true});
+    // itemForm.get('sku').patchValue(this.newItemForm.get('sku').value);
+    // itemForm.updateValueAndValidity();
+    itemForm.markAllAsTouched();
+    this.items.updateValueAndValidity();
   }
 
   removeItem(index: number) {
